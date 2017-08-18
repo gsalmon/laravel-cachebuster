@@ -24,6 +24,14 @@ class CachebusterServiceProvider extends ServiceProvider {
         if ($rc->hasMethod('close')) {
             $this->app->close('cachebuster.StripSessionCookiesFilter');
         }
+
+        $configPath =  realpath(__DIR__ . '/../..');
+
+        $this->publishes([
+		    $configPath . "/config/config.php" => config_path('cachebuster.php'),
+		]);
+
+
 	}
 
 	/**
