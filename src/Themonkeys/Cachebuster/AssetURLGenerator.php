@@ -38,6 +38,7 @@ class AssetURLGenerator
             if ($md5) {
                 $parts = pathinfo($url);
                 $dirname = ends_with($parts['dirname'], '/') ? $parts['dirname'] : $parts['dirname'] . '/';
+                if(array_key_exists('extension',$parts))
                 $url = "{$dirname}{$parts['filename']}-$md5.{$parts['extension']}";
             }
         }
@@ -52,7 +53,8 @@ class AssetURLGenerator
             if (File::exists($path) && File::isFile($path)) {
                 return md5_file($path);
             } else {
-                throw new \Exception("Asset '$path' not found");
+                return $path;
+                //throw new \Exception("Asset '$path' not found ($asset)");
             }
         };
         if ($expiry) {
@@ -108,13 +110,36 @@ class AssetURLGenerator
                 $source,
                 200,
                 array(
-                    'Content-Type' => 'text/css',
+                    'Content-Type' => $self->determine_content_type($url),
                 )
             );
 
         } else {
             App::abort(404, 'Page not found');
         }
+    }
+
+    /*
+     * Determine the content type based on the extension of the URL
+     *
+     */
+    protected function determine_content_type($source){
+        $default = Config::get("cachebuster::default_content_type");
+
+        $content_type_map = array(  'js'    => 'application/javascript',
+                                    'css'   => 'text/css'
+        );
+
+        //Get the extension
+        $parts = pathinfo($source);
+        if(array_key_exists('extension',$parts)) {
+            $extension = $parts['extension'];
+            if(array_key_exists(strtolower($extension), $content_type_map)){
+                return $content_type_map[$extension];
+            }
+        }
+
+        return $default;
     }
 
     protected function strip_cachebuster($url) {

@@ -6,7 +6,11 @@ class StripSessionCookiesFilter {
     private $patterns = array();
 
     public function addPattern($pattern) {
-        $this->patterns []= $pattern;
+        if(is_array($pattern)){
+            $this->patterns = array_merge($this->patterns, $pattern);
+            } else {
+            $this->patterns []= $pattern;
+        }
     }
 
     public function matches($request) {

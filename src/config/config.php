@@ -55,4 +55,16 @@ return array(
     */
     'enabled' => true,
 
+    /*
+      |--------------------------------------------------------------------------
+      | Default content type
+      |--------------------------------------------------------------------------
+      |
+      | The result will be returned with either text/css or application/javascript,
+      | depending on its extension.  If there is no extension, or the extension does
+      | not match the supported types, this type will be returned
+      |
+      */
+    'default_content_type' => 'text/css',
+
 );
