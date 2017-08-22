@@ -53,7 +53,7 @@ class AssetURLGenerator
             if (File::exists($path) && File::isFile($path)) {
                 return md5_file($path);
             } else {
-                return $path;
+                return "";
                 //throw new \Exception("Asset '$path' not found ($asset)");
             }
         };
@@ -90,7 +90,8 @@ class AssetURLGenerator
                     $qs = $matches[3];
 
                     // determine the absolute path of the given URL (resolve ../ etc against the path to the css file)
-                    if (substr($url, 0, 1) != '/') {
+                    //Fucking dont
+                    if (substr($url, 0, 1) != '/' && substr($url, 0, 1) != '.' ) {
                         $abs = realpath($base . '/' . $url);
                         if (File::exists($abs) && starts_with($abs, $public)) {
                             $url = substr($abs, strlen($public));
@@ -98,7 +99,7 @@ class AssetURLGenerator
                     }
                     // if the url is absolute, we can process; otherwise, have to leave it alone
                     $replacement = $matches[0];
-                    if (substr($url, 0, 1) == '/') {
+                    if (substr($url, 0, 1) == '/' && substr($url, 0, 1) != '.') {
                         $replacement = 'url(' . $matches[1] . $self->url($url) . $matches[3] . ')';
                     }
                     return $replacement;
@@ -115,7 +116,7 @@ class AssetURLGenerator
             );
 
         } else {
-            App::abort(404, 'Page not found');
+            App::abort(404, 'Page not found (Path:'.$path.') (URL: '.$url.')');
         }
     }
 
