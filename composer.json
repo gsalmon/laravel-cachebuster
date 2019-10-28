@@ -1,7 +1,7 @@
 {
-    "name": "themonkeys/cachebuster",
+    "name": "gsalmon/cachebuster",
     "description": "Adds MD5 hashes to the URLs of your application's assets, so when they change, their URL changes.",
-    "homepage": "http://github.com/TheMonkeys/laravel-cachebuster",
+    "homepage": "http://github.com/gsalmon/laravel-cachebuster",
     "keywords": ["assets", "cachebuster", "cdn", "laravel"],
     "license": "MIT",
     "authors": [
